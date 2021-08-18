@@ -1,7 +1,7 @@
 #include <ros.h>
 #include <std_msgs/Int8.h>
 
-#define relay_pin 8
+#define relay_pin A4
 
 ros::NodeHandle  nh;
 
@@ -23,7 +23,6 @@ ros::Subscriber<std_msgs::Int8> sub("relay", messageCb);
 void setup()
 { 
   pinMode(relay_pin, OUTPUT);
-  digitalWrite(relay_pin, HIGH);
   nh.initNode();
   nh.subscribe(sub);
 }
