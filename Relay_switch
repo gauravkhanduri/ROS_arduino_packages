@@ -2,7 +2,7 @@
 #include <ros.h>
 #include <std_msgs/Int8.h>
 
-#define relay_pin 8
+#define relay_pin A4   //analog pin
 
 int relay_status = LOW;
 
