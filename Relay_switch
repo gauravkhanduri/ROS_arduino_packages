@@ -1,0 +1,31 @@
+#include <ros.h>
+#include <std_msgs/UInt16.h>
+
+#define relay_pin 8
+
+int relay_status = HIGH;
+
+ros::NodeHandle  nh;
+
+void messageCb( const std_msgs::UInt16& relay_msg){
+      digitalWrite(relay_pin, HIGH);
+      delay(10);
+       
+      
+}
+
+ros::Subscriber<std_msgs::UInt16> sub("relay",10, &messageCb );
+
+void setup()
+{ 
+  pinMode(relay_pin, OUTPUT);
+  digitalWrite(relay_pin, HIGH); // Initial relay status to be OFF.
+  nh.initNode();
+  nh.subscribe(sub);
+}
+
+void loop()
+{  
+  nh.spinOnce();
+  delay(1);
+}
