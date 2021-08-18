@@ -1,10 +1,7 @@
-
 #include <ros.h>
 #include <std_msgs/Int8.h>
 
 #define relay_pin 8
-
-
 
 ros::NodeHandle  nh;
 
@@ -12,20 +9,21 @@ void messageCb( const std_msgs::Int8& relay_msg){
       int val = relay_msg.data;
       if(val == 1){
         
-        digitalWrite(relay_pin,LOW);
+        digitalWrite(relay_pin, LOW);
         }
       else{
         
         digitalWrite(relay_pin,HIGH);
-        }
-      delay(10);
+       }
+      delay(100);
 }
 
-ros::Subscriber<std_msgs::Int8> sub("relay", &messageCb);
+ros::Subscriber<std_msgs::Int8> sub("relay", messageCb);
 
 void setup()
 { 
   pinMode(relay_pin, OUTPUT);
+  digitalWrite(relay_pin, HIGH);
   nh.initNode();
   nh.subscribe(sub);
 }
@@ -33,5 +31,6 @@ void setup()
 void loop()
 {  
   nh.spinOnce();
-  delay(100);
+  delay(1);
 }
+
