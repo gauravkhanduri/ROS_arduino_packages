@@ -15,33 +15,26 @@ void messageCb( const std_msgs::Int8& relay_msg){
       if(val == 1){
         digitalWrite(relay_pin, LOW);
         }
-      else if(val == 2){
+      if(val == 2){
         digitalWrite(relay_pin1,LOW);
         }
-       else if(val == 3){
+       if(val == 3){
         digitalWrite(relay_pin,HIGH);
         }
-        else if(val == 4) {
+       if(val == 4) {
           digitalWrite(relay_pin1,HIGH);
           }
-       else{
-          servo.write(val);
+       if(val==0 || val == 180){
+         servo.write(val);
+        }
+       if(val==90) {
+         servo.write(val);
+         servo.detach();
         }
       }
-    
-void servo_cb(const std_msgs::Int8& relay_msg ){
-    int val = relay_msg.data;
-    if(val==0 || val == 180){
-      servo.write(val);
-      }
-    else{
-      servo.write(val);
-      servo.detach();
-      }
   
-  }
 
-ros::Subscriber<std_msgs::Int8> sub("relay", messageCb, servo_cb);
+ros::Subscriber<std_msgs::Int8> sub("relay", messageCb);
 
 void setup()
 { 
