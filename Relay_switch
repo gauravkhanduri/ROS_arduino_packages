@@ -1,32 +1,43 @@
-
 #include <ros.h>
 #include <std_msgs/Int8.h>
 
-#define relay_pin A4   //analog pin
+#define relay_pin  A0
+#define relay_pin1 A1
 
-int relay_status = LOW;
+
+
 
 ros::NodeHandle  nh;
 
 void messageCb( const std_msgs::Int8& relay_msg){
       int val = relay_msg.data;
-      if(val == 1 && relay_status){
-        
-        digitalWrite(relay_pin,LOW);
+      if(val == 1){
+        digitalWrite(relay_pin, LOW);
         }
-      else{
-        
+      else if(val == 2){
+        digitalWrite(relay_pin1,LOW);
+        }
+       else if(val == 0){
         digitalWrite(relay_pin,HIGH);
         }
-      delay(10);
-}
+        else{
+          digitalWrite(relay_pin1,HIGH);
+          }
+       
+      }
+     
+
 
 ros::Subscriber<std_msgs::Int8> sub("relay", messageCb);
 
 void setup()
 { 
   pinMode(relay_pin, OUTPUT);
-  //igitalWrite(relay_pin, HIGH); // Initial relay status to be OFF.
+  pinMode(relay_pin1, OUTPUT);
+  digitalWrite(relay_pin, HIGH);
+  digitalWrite(relay_pin1, HIGH);
+  
+  
   nh.initNode();
   nh.subscribe(sub);
 }
@@ -36,3 +47,4 @@ void loop()
   nh.spinOnce();
   delay(100);
 }
+
