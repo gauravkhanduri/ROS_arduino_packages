@@ -1,0 +1,33 @@
+#include <ros.h>
+#include <std_msgs/Int8.h>
+
+ros::NodeHandle n;
+
+std_msgs::Int8 Int_msg;
+ros::Publisher chatter("relay", &Int_msg);
+
+const int button_pin = 2;
+
+void setup() {
+  
+  pinMode(button_pin,INPUT_PULLUP);
+  n.initNode();
+  n.advertise(chatter);
+ 
+}
+
+void loop(){
+
+  int sensor_val = digitalRead(button_pin);
+  //HIGH is 0 and LOW is 1;
+  if(sensor_val == HIGH){
+    Int_msg.data = sensor_val;
+    
+    
+    }
+  
+  chatter.publish(&Int_msg);
+  n.spinOnce();
+  delay(10);
+
+}
