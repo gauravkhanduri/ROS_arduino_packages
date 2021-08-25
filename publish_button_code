@@ -1,16 +1,20 @@
 #include <ros.h>
-#include <std_msgs/Int8.h>
+#include "std_msgs/Int8MultiArray.h"
 
 ros::NodeHandle n;
 
-std_msgs::Int8 Int_msg;
-ros::Publisher chatter("relay", &Int_msg);
+std_msgs::Int8MultiArray array;
+ros::Publisher chatter("relay", array);
 
 const int button_pin = 2;
+const int button_pin1 = 3;
+const int button_pin2 = 4;
 
 void setup() {
   
   pinMode(button_pin,INPUT_PULLUP);
+  pinMode(button_pin1,INPUT_PULLUP);
+  pinMode(button_pin2,INPUT_PULLUP);
   n.initNode();
   n.advertise(chatter);
  
@@ -18,15 +22,11 @@ void setup() {
 
 void loop(){
 
-  int sensor_val = digitalRead(button_pin);
-  //HIGH is 0 and LOW is 1;
-  if(sensor_val == HIGH){
-    Int_msg.data = sensor_val;
-    
-    
-    }
-  
-  chatter.publish(&Int_msg);
+  array.data.push_back(digitalRead(button_pin));
+  array.data.push_back(digitalRead(button_pin1));
+  array.data.push_back(digitalRead(button_pin2));  
+  chatter.publish(array);
+  array.data.clear();
   n.spinOnce();
   delay(10);
 
