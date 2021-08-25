@@ -1,5 +1,5 @@
 #include <ros.h>
-#include <std_msgs/Int8.h>
+#include <std_msgs/Int8MultiArray.h>
 #include <Servo.h>
 
 #define relay_pin  A0
@@ -10,32 +10,32 @@ Servo servo;
 
 ros::NodeHandle  nh;
 
-void messageCb( const std_msgs::Int8& relay_msg){
-      int val = relay_msg.data;
-      if(val == 1){
+void messageCb( const std_msgs::Int8MultiArray& relay_msg){
+      int val[] = relay_msg.data;
+      if(val[0] == 0){
         digitalWrite(relay_pin, LOW);
         }
-       else if(val == 2){
+       else if(val[1] == 0){
         digitalWrite(relay_pin1,LOW);
         }
-       else if(val == 3){
+       else if(val[0] == 1){
         digitalWrite(relay_pin,HIGH);
         }
-       else if(val == 4) {
+       else if(val[1] == 1) {
           digitalWrite(relay_pin1,HIGH);
           }
-        else if(val>=60 && val <= 125){
-         servo.write(val);
+        else if(val[2] ==0){
+         servo.write(0);
         }
         else{
-          servo.write(val);
+          servo.write(125);
           }
         
       }
     
 
 
-ros::Subscriber<std_msgs::Int8> sub("relay", messageCb);
+ros::Subscriber<std_msgs::Int8MultiArray> sub("relay", messageCb);
 
 void setup()
 { 
