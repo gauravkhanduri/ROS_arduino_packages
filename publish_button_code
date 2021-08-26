@@ -4,29 +4,38 @@
 ros::NodeHandle n;
 
 std_msgs::Int8 Int_msg;
+std_msgs::Int8 Int_msg1;
+std_msgs::Int8 Int_msg2;
 ros::Publisher chatter("relay", &Int_msg);
-
+ros::Publisher chatter1("relay1", &Int_msg);
+ros::Publisher chatter2("servo", &Int_msg);
 const int button_pin = 2;
+const int button_pin1 = 4;
+const int button_pin2 = 7;
 
 void setup() {
   
   pinMode(button_pin,INPUT_PULLUP);
+  pinMode(button_pin1,INPUT_PULLUP);
+  pinMode(button_pin2,INPUT_PULLUP);
   n.initNode();
   n.advertise(chatter);
+  n.advertise(chatter1);
+  n.advertise(chatter2);
  
 }
 
 void loop(){
 
   int sensor_val = digitalRead(button_pin);
-  //HIGH is 0 and LOW is 1;
-  if(sensor_val == HIGH){
-    Int_msg.data = sensor_val;
-    
-    
-    }
-  
+  int sensor_val1 = digitalRead(button_pin1);
+  int sensor_val2 = digitalRead(button_pin2);
+  Int_msg.data = sensor_val
+  Int_msg1.data = sensor_val1
+  Int_msg2.data = sensor_val2
   chatter.publish(&Int_msg);
+  chatter1.publish(&Int_msg1);
+  chatter2.publish(&Int_msg2);
   n.spinOnce();
   delay(10);
 
